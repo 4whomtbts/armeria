@@ -130,8 +130,9 @@ in your configuration as follows:
          */
         @Bean
         public ClientFactory clientFactory() {
-            return new ClientFactoryBuilder().sslContextCustomizer(
-                    b -> b.trustManager(InsecureTrustManagerFactory.INSTANCE)).build();
+            return ClientFactory.builder()
+                                .sslContextCustomizer(b -> b.trustManager(InsecureTrustManagerFactory.INSTANCE))
+                                .build();
         }
 
         /**

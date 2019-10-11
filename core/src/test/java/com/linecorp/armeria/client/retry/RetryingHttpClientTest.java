@@ -47,7 +47,6 @@ import org.reactivestreams.Subscription;
 import com.google.common.base.Stopwatch;
 
 import com.linecorp.armeria.client.ClientFactory;
-import com.linecorp.armeria.client.ClientFactoryBuilder;
 import com.linecorp.armeria.client.ClientRequestContext;
 import com.linecorp.armeria.client.HttpClient;
 import com.linecorp.armeria.client.HttpClientBuilder;
@@ -80,8 +79,10 @@ import io.netty.channel.EventLoop;
 public class RetryingHttpClientTest {
 
     // use different eventLoop from server's so that clients don't hang when the eventLoop in server hangs
-    private static final ClientFactory clientFactory = new ClientFactoryBuilder()
-            .workerGroup(EventLoopGroups.newEventLoopGroup(2), true).build();
+    private static final ClientFactory clientFactory =
+            ClientFactory.builder()
+                         .workerGroup(EventLoopGroups.newEventLoopGroup(2),true)
+                         .build();
 
     private static final RetryStrategy retryAlways =
             (ctx, cause) -> CompletableFuture.completedFuture(Backoff.fixed(500));
@@ -412,8 +413,10 @@ public class RetryingHttpClientTest {
 
     @Test
     public void shouldGetExceptionWhenFactoryIsClosed() {
-        final ClientFactory factory = new ClientFactoryBuilder()
-                .workerGroup(EventLoopGroups.newEventLoopGroup(2), true).build();
+        final ClientFactory factory =
+                ClientFactory.builder()
+                             .workerGroup(EventLoopGroups.newEventLoopGroup(2), true)
+                             .build();
 
         final HttpClient client = new HttpClientBuilder(server.uri("/"))
                 .factory(factory)

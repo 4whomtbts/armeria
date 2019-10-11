@@ -29,7 +29,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.linecorp.armeria.client.ClientFactory;
-import com.linecorp.armeria.client.ClientFactoryBuilder;
 import com.linecorp.armeria.client.HttpClient;
 import com.linecorp.armeria.common.AggregatedHttpResponse;
 import com.linecorp.armeria.common.HttpResponse;
@@ -64,9 +63,11 @@ class ServerBuilderTest {
 
     @BeforeAll
     static void init() {
-        clientFactory = new ClientFactoryBuilder()
-                .addressResolverGroupFactory(eventLoopGroup -> MockAddressResolverGroup.localhost())
-                .build();
+        clientFactory =
+                ClientFactory.builder()
+                             .addressResolverGroupFactory(
+                                     eventLoopGroup -> MockAddressResolverGroup.localhost())
+                             .build();
     }
 
     @AfterAll
@@ -237,13 +238,14 @@ class ServerBuilderTest {
 
     @Test
     void serveWithDefaultVirtualHostServiceIfNotExists() {
-        final Server server = new ServerBuilder()
-                .serviceUnder("/", (ctx, req) -> HttpResponse.of("default"))
-                .service("/abc", (ctx, req) -> HttpResponse.of("default_abc"))
-                .virtualHost("foo.com")
-                .service("/", (ctx, req) -> HttpResponse.of("foo"))
-                .service("/abc", (ctx, req) -> HttpResponse.of("foo_abc"))
-                .and().build();
+        final Server server =
+                Server.builder()
+                      .serviceUnder("/", (ctx, req) -> HttpResponse.of("default"))
+                      .service("/abc", (ctx, req) -> HttpResponse.of("default_abc"))
+                      .virtualHost("foo.com")
+                      .service("/", (ctx, req) -> HttpResponse.of("foo"))
+                      .service("/abc", (ctx, req) -> HttpResponse.of("foo_abc"))
+                      .and().build();
         server.start().join();
 
         final HttpClient client = HttpClient.of(clientFactory, "http://127.0.0.1:" + server.activeLocalPort());
@@ -261,21 +263,22 @@ class ServerBuilderTest {
 
     @Test
     void serviceConfigurationPriority() {
-        final Server server = new ServerBuilder()
-                .requestTimeoutMillis(100)     // for default virtual host
-                .service("/default_virtual_host",
-                         (ctx, req) -> HttpResponse.delayed(
+        final Server server =
+                Server.builder()
+                      .requestTimeoutMillis(100)     // for default virtual host
+                      .service("/default_virtual_host",
+                             (ctx, req) -> HttpResponse.delayed(
                                  HttpResponse.of(HttpStatus.OK), Duration.ofMillis(200))
-                )
-                .route().get("/service_config")
-                .requestTimeoutMillis(200)     // for service
-                .build((ctx, req) -> HttpResponse
-                        .delayed(HttpResponse.of(HttpStatus.OK), Duration.ofMillis(250)))
-                .virtualHost("foo.com")
-                .service("/custom_virtual_host", (ctx, req) -> HttpResponse.delayed(
-                        HttpResponse.of(HttpStatus.OK), Duration.ofMillis(150)))
-                .requestTimeoutMillis(300)    // for custom virtual host
-                .and().build();
+                      )
+                      .route().get("/service_config")
+                      .requestTimeoutMillis(200)     // for service
+                      .build((ctx, req) -> HttpResponse.delayed(HttpResponse.of(HttpStatus.OK),
+                                                                Duration.ofMillis(250)))
+                      .virtualHost("foo.com")
+                      .service("/custom_virtual_host", (ctx, req) -> HttpResponse.delayed(
+                          HttpResponse.of(HttpStatus.OK), Duration.ofMillis(150)))
+                      .requestTimeoutMillis(300)    // for custom virtual host
+                      .and().build();
         server.start().join();
 
         final HttpClient client = HttpClient.of(clientFactory, "http://127.0.0.1:" + server.activeLocalPort());

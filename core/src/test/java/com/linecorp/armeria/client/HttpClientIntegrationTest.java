@@ -581,7 +581,7 @@ class HttpClientIntegrationTest {
 
     @Test
     void testCloseClientFactory() throws Exception {
-        final ClientFactory factory = new ClientFactoryBuilder().build();
+        final ClientFactory factory = ClientFactory.builder().build();
         final HttpClient client = factory.newClient("none+" + server.uri("/"), HttpClient.class);
         final HttpRequestWriter req = HttpRequest.streaming(RequestHeaders.of(HttpMethod.GET,
                                                                               "/stream-closed"));
@@ -624,7 +624,7 @@ class HttpClientIntegrationTest {
     @Test
     void givenClients_thenBuildClient() throws Exception {
         final Endpoint endpoint = newEndpoint();
-        final ClientFactory factory = new ClientFactoryBuilder().build();
+        final ClientFactory factory = ClientFactory.builder().build();
 
         HttpClient client = Clients.newClient(factory, SessionProtocol.HTTP, SerializationFormat.NONE,
                                               endpoint, HttpClient.class);
@@ -645,7 +645,7 @@ class HttpClientIntegrationTest {
     @Test
     void givenHttpClient_thenBuildClient() throws Exception {
         final Endpoint endpoint = newEndpoint();
-        final ClientFactory factory = new ClientFactoryBuilder().build();
+        final ClientFactory factory = ClientFactory.builder().build();
 
         HttpClient client = HttpClient.of(factory, SessionProtocol.HTTP, endpoint);
         checkGetRequest("/hello/world", client);
@@ -663,7 +663,7 @@ class HttpClientIntegrationTest {
     @Test
     void givenClientBuilder_thenBuildClient() throws Exception {
         final Endpoint endpoint = newEndpoint();
-        final ClientFactory factory = new ClientFactoryBuilder().build();
+        final ClientFactory factory = ClientFactory.builder().build();
 
         HttpClient client = new ClientBuilder(SessionProtocol.HTTP, endpoint)
                 .serializationFormat(SerializationFormat.NONE)
@@ -698,9 +698,9 @@ class HttpClientIntegrationTest {
 
     @Test
     void testUpgradeRequestExecutesLogicOnlyOnce() throws Exception {
-        final ClientFactory clientFactory = new ClientFactoryBuilder()
-                .useHttp2Preface(false)
-                .build();
+        final ClientFactory clientFactory = ClientFactory.builder()
+                                                         .useHttp2Preface(false)
+                                                         .build();
         final HttpClient client = new HttpClientBuilder(server.httpUri("/"))
                 .factory(clientFactory)
                 .decorator(HttpDecodingClient.newDecorator())

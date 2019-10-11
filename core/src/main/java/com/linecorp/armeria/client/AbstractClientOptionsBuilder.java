@@ -41,7 +41,7 @@ import com.linecorp.armeria.internal.ArmeriaHttpUtil;
 class AbstractClientOptionsBuilder<B extends AbstractClientOptionsBuilder<B>> {
 
     private final Map<ClientOption<?>, ClientOptionValue<?>> options = new LinkedHashMap<>();
-    private final ClientDecorationBuilder decoration = new ClientDecorationBuilder();
+    private final ClientDecorationBuilder decoration = ClientDecoration.builder();
     private final HttpHeadersBuilder httpHeaders = HttpHeaders.builder();
 
     /**

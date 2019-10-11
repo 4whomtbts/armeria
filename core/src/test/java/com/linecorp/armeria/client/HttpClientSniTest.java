@@ -79,10 +79,12 @@ class HttpClientSniTest {
         httpsPort = server.activePorts().values().stream()
                           .filter(ServerPort::hasHttps).findAny().get().localAddress()
                           .getPort();
-        clientFactory = new ClientFactoryBuilder()
-                .sslContextCustomizer(b -> b.trustManager(InsecureTrustManagerFactory.INSTANCE))
-                .addressResolverGroupFactory(eventLoopGroup -> MockAddressResolverGroup.localhost())
-                .build();
+        clientFactory = ClientFactory.builder()
+                                     .sslContextCustomizer(b -> b.trustManager(
+                                             InsecureTrustManagerFactory.INSTANCE))
+                                     .addressResolverGroupFactory(
+                                             eventLoopGroup -> MockAddressResolverGroup.localhost())
+                                     .build();
     }
 
     @AfterAll

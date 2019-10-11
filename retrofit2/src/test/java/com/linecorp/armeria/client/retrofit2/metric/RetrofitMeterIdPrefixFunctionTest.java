@@ -24,7 +24,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
 import com.linecorp.armeria.client.ClientFactory;
-import com.linecorp.armeria.client.ClientFactoryBuilder;
 import com.linecorp.armeria.client.ClientOptionsBuilder;
 import com.linecorp.armeria.client.ClientRequestContext;
 import com.linecorp.armeria.client.metric.MetricCollectingClient;
@@ -50,8 +49,9 @@ import retrofit2.http.POST;
 public class RetrofitMeterIdPrefixFunctionTest {
 
     private static final SimpleMeterRegistry meterRegistry = new SimpleMeterRegistry();
-    private static final ClientFactory clientFactory = new ClientFactoryBuilder().meterRegistry(meterRegistry)
-                                                                                 .build();
+    private static final ClientFactory clientFactory = ClientFactory.builder()
+                                                                    .meterRegistry(meterRegistry)
+                                                                    .build();
 
     interface Example {
         @GET("/foo")

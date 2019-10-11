@@ -29,7 +29,6 @@ import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import com.linecorp.armeria.client.ClientFactory;
-import com.linecorp.armeria.client.ClientFactoryBuilder;
 import com.linecorp.armeria.client.ClientOptionsBuilder;
 import com.linecorp.armeria.client.Endpoint;
 import com.linecorp.armeria.client.endpoint.StaticEndpointGroup;
@@ -72,9 +71,10 @@ class HttpHealthCheckedEndpointGroupTest {
     @RegisterExtension
     static final ServerExtension serverTwo = new HealthCheckServerExtension();
 
-    private final ClientFactory clientFactory = new ClientFactoryBuilder()
-            .sslContextCustomizer(s -> s.trustManager(InsecureTrustManagerFactory.INSTANCE))
-            .build();
+    private final ClientFactory clientFactory =
+            ClientFactory.builder()
+                         .sslContextCustomizer(s -> s.trustManager(InsecureTrustManagerFactory.INSTANCE))
+                         .build();
 
     @ParameterizedTest
     @CsvSource({ "HTTP, false", "HTTP, true", "HTTPS, false", "HTTPS, true" })

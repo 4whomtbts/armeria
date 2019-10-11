@@ -25,13 +25,13 @@ public class ClientConnectionTimingsTest {
 
     @Test
     public void toStringBuilderCapacity() {
-        final ClientConnectionTimings timings = new ClientConnectionTimingsBuilder()
-                .dnsResolutionEnd()
-                .pendingAcquisitionStart()
-                .pendingAcquisitionEnd()
-                .socketConnectStart()
-                .socketConnectEnd()
-                .build();
+        final ClientConnectionTimings timings = ClientConnectionTimings.builder()
+                                                                       .dnsResolutionEnd()
+                                                                       .pendingAcquisitionStart()
+                                                                       .pendingAcquisitionEnd()
+                                                                       .socketConnectStart()
+                                                                       .socketConnectEnd()
+                                                                       .build();
 
         assertThat(timings.toString().length()).isLessThanOrEqualTo(TO_STRING_BUILDER_CAPACITY);
     }

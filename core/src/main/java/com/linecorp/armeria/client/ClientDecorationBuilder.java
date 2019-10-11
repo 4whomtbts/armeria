@@ -35,6 +35,13 @@ import com.linecorp.armeria.common.RpcResponse;
  */
 public final class ClientDecorationBuilder {
 
+    /**
+     * Creates a new instance.
+     * @deprecated  Use {@link ClientDecoration#builder}.
+     */
+    @Deprecated
+    public ClientDecorationBuilder() {}
+
     private final List<Entry<?, ?>> entries = new ArrayList<>();
 
     /**

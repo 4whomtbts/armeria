@@ -66,7 +66,6 @@ import com.google.common.base.Strings;
 import com.google.common.io.ByteStreams;
 
 import com.linecorp.armeria.client.ClientFactory;
-import com.linecorp.armeria.client.ClientFactoryBuilder;
 import com.linecorp.armeria.client.HttpClient;
 import com.linecorp.armeria.client.HttpClientBuilder;
 import com.linecorp.armeria.common.AggregatedHttpResponse;
@@ -106,11 +105,12 @@ class HttpServerTest {
 
     private static final EventLoopGroup workerGroup = EventLoopGroups.newEventLoopGroup(1);
 
-    private static final ClientFactory clientFactory = new ClientFactoryBuilder()
-            .workerGroup(workerGroup, false) // Will be shut down by the Server.
-            .idleTimeout(Duration.ofSeconds(3))
-            .sslContextCustomizer(b -> b.trustManager(InsecureTrustManagerFactory.INSTANCE))
-            .build();
+    private static final ClientFactory clientFactory =
+            ClientFactory.builder()
+                         .workerGroup(workerGroup, false) // Will be shut down by the Server.
+                         .idleTimeout(Duration.ofSeconds(3))
+                         .sslContextCustomizer(b -> b.trustManager(InsecureTrustManagerFactory.INSTANCE))
+                         .build();
 
     private static final long MAX_CONTENT_LENGTH = 65536;
 

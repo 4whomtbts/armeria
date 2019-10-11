@@ -61,7 +61,15 @@ public interface ClientFactory extends AutoCloseable {
     /**
      * The default {@link ClientFactory} implementation.
      */
-    ClientFactory DEFAULT = new ClientFactoryBuilder().build();
+    ClientFactory DEFAULT = ClientFactory.builder()
+                                         .build();
+
+    /**
+     * Returns a new {@link ClientFactoryBuilder}.
+     */
+    static ClientFactoryBuilder builder() {
+        return new ClientFactoryBuilder();
+    }
 
     /**
      * Closes the default {@link ClientFactory}.

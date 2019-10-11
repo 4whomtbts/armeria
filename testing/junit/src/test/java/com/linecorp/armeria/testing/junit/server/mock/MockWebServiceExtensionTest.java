@@ -26,7 +26,7 @@ import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.RegisterExtension;
 
-import com.linecorp.armeria.client.ClientFactoryBuilder;
+import com.linecorp.armeria.client.ClientFactory;
 import com.linecorp.armeria.client.ClientOption;
 import com.linecorp.armeria.client.HttpClient;
 import com.linecorp.armeria.client.HttpClientBuilder;
@@ -48,10 +48,10 @@ class MockWebServiceExtensionTest {
     void normal() {
         final HttpClient httpClient = HttpClient.of(server.httpUri("/"));
         final HttpClient httpsClient = new HttpClientBuilder(server.httpsUri("/"))
-                .factory(new ClientFactoryBuilder()
-                                 .sslContextCustomizer(
+                .factory(ClientFactory.builder()
+                                      .sslContextCustomizer(
                                          ssl -> ssl.trustManager(InsecureTrustManagerFactory.INSTANCE))
-                                 .build())
+                                      .build())
                 .build();
         server.enqueue(AggregatedHttpResponse.of(HttpStatus.OK, MediaType.PLAIN_TEXT_UTF_8, "hello"));
         server.enqueue(HttpResponse.of(AggregatedHttpResponse.of(HttpStatus.FORBIDDEN)));

@@ -65,18 +65,18 @@ public class ClientOptionsBuilderTest {
         final Function decorator = LoggingClient.newDecorator();
 
         b.option(ClientOption.DECORATION.newValue(
-                new ClientDecorationBuilder()
-                        .add(HttpRequest.class, HttpResponse.class, decorator)
-                        .build()));
+                ClientDecoration.builder()
+                                .add(HttpRequest.class, HttpResponse.class, decorator)
+                                .build()));
 
         assertThat(b.build().decoration().entries()).containsExactly(
                 new Entry<>(HttpRequest.class, HttpResponse.class, decorator));
 
         // Add another decorator to ensure that the builder does not replace the previous one.
         b.option(ClientOption.DECORATION.newValue(
-                new ClientDecorationBuilder()
-                        .add(RpcRequest.class, RpcResponse.class, decorator)
-                        .build()));
+                ClientDecoration.builder()
+                                .add(RpcRequest.class, RpcResponse.class, decorator)
+                                .build()));
         assertThat(b.build().decoration().entries()).containsExactly(
                 new Entry<>(HttpRequest.class, HttpResponse.class, decorator),
                 new Entry<>(RpcRequest.class, RpcResponse.class, decorator));

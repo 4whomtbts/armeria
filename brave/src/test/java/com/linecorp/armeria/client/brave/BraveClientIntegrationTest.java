@@ -30,7 +30,7 @@ import org.junit.runners.Parameterized.Parameters;
 
 import com.google.common.collect.ImmutableList;
 
-import com.linecorp.armeria.client.ClientDecorationBuilder;
+import com.linecorp.armeria.client.ClientDecoration;
 import com.linecorp.armeria.client.ClientFactory;
 import com.linecorp.armeria.client.ClientOption;
 import com.linecorp.armeria.client.ClientOptions;
@@ -94,9 +94,9 @@ public class BraveClientIntegrationTest extends ITHttpAsyncClient<HttpClient> {
     protected HttpClient newClient(int port) {
         return HttpClient.of(sessionProtocol.uriText() + "://127.0.0.1:" + port,
                              ClientOptions.of(ClientOption.DECORATION.newValue(
-                                     new ClientDecorationBuilder()
-                                             .add(BraveClient.newDecorator(httpTracing))
-                                             .build())));
+                                     ClientDecoration.builder()
+                                                     .add(BraveClient.newDecorator(httpTracing))
+                                                     .build())));
     }
 
     @Override

@@ -24,7 +24,7 @@ import java.util.Map;
 
 import org.junit.Test;
 
-import com.linecorp.armeria.client.ClientConnectionTimingsBuilder;
+import com.linecorp.armeria.client.ClientConnectionTimings;
 import com.linecorp.armeria.client.ClientRequestContext;
 import com.linecorp.armeria.client.ClientRequestContextBuilder;
 import com.linecorp.armeria.client.Endpoint;
@@ -92,13 +92,14 @@ public class RequestMetricSupportTest {
     }
 
     private static void setConnectionTimings(ClientRequestContext ctx) {
-        new ClientConnectionTimingsBuilder().dnsResolutionEnd()
-                                            .socketConnectStart()
-                                            .socketConnectEnd()
-                                            .pendingAcquisitionStart()
-                                            .pendingAcquisitionEnd()
-                                            .build()
-                                            .setTo(ctx);
+        ClientConnectionTimings.builder()
+                               .dnsResolutionEnd()
+                               .socketConnectStart()
+                               .socketConnectEnd()
+                               .pendingAcquisitionStart()
+                               .pendingAcquisitionEnd()
+                               .build()
+                               .setTo(ctx);
     }
 
     @Test

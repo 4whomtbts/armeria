@@ -232,7 +232,7 @@ decorators using ``decoratorUnder(pathPrefix, ...)`` or ``decorator(Route, ...)`
     HtmlService htmlService = ...;
     JsService jsService = ...;
 
-    ServerBuilder sb = new ServerBuilder();
+    ServerBuilder sb = Server.builder();
 
     // Register vipService and memberService under '/users' path
     sb.annotatedService("/users/vip", vipService)
@@ -261,7 +261,7 @@ You can also use fluent route builder with ``routeDecorator()`` to match service
 
 .. code-block:: java
 
-    ServerBuilder sb = new ServerBuilder();
+    ServerBuilder sb = Server.builder();
 
     // Register vipService and memberService under '/users' path
     sb.annotatedService("/users/vip", vipService)

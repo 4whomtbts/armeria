@@ -54,6 +54,13 @@ public final class ClientConnectionTimings {
     private final long pendingAcquisitionDurationNanos;
 
     /**
+     * Returns a new {@link ClientConnectionTimingsBuilder}.
+     */
+    public static ClientConnectionTimingsBuilder builder() {
+        return new ClientConnectionTimingsBuilder();
+    }
+
+    /**
      * Returns {@link ClientConnectionTimings} from the specified {@link RequestContext} if exists.
      *
      * @see #setTo(RequestContext)

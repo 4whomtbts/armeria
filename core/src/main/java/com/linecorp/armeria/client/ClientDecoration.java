@@ -36,6 +36,13 @@ public final class ClientDecoration {
     public static final ClientDecoration NONE = new ClientDecoration(Collections.emptyList());
 
     /**
+     * Returns a new {@link ClientDecorationBuilder}.
+     */
+    public static ClientDecorationBuilder builder() {
+        return new ClientDecorationBuilder();
+    }
+
+    /**
      * Creates a new instance from a single decorator {@link Function}.
      *
      * @param requestType the type of the {@link Request} that the {@code decorator} is interested in
@@ -46,7 +53,9 @@ public final class ClientDecoration {
      */
     public static <T extends Client<I, O>, R extends Client<I, O>, I extends Request, O extends Response>
     ClientDecoration of(Class<I> requestType, Class<O> responseType, Function<T, R> decorator) {
-        return new ClientDecorationBuilder().add(requestType, responseType, decorator).build();
+        return ClientDecoration.builder()
+                               .add(requestType, responseType, decorator)
+                               .build();
     }
 
     private final List<Entry<?, ?>> entries;

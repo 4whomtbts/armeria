@@ -27,7 +27,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ArgumentsSource;
 
 import com.linecorp.armeria.client.ClientFactory;
-import com.linecorp.armeria.client.ClientFactoryBuilder;
 import com.linecorp.armeria.client.HttpClient;
 import com.linecorp.armeria.common.AggregatedHttpResponse;
 import com.linecorp.armeria.common.HttpMethod;
@@ -44,8 +43,10 @@ import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 class PortUnificationServerTest {
 
     private static final ClientFactory clientFactory =
-            new ClientFactoryBuilder().sslContextCustomizer(
-                    b -> b.trustManager(InsecureTrustManagerFactory.INSTANCE)).build();
+            ClientFactory.builder()
+                         .sslContextCustomizer(
+                            b -> b.trustManager(InsecureTrustManagerFactory.INSTANCE))
+                         .build();
 
     @RegisterExtension
     static final ServerExtension server = new ServerExtension() {

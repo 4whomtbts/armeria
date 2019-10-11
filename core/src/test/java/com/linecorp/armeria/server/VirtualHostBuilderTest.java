@@ -234,7 +234,7 @@ class VirtualHostBuilderTest {
     void precedenceOfDuplicateRoute() {
         final Route routeA = Route.builder().path("/").build();
         final Route routeB = Route.builder().path("/").build();
-        final VirtualHost virtualHost = new VirtualHostBuilder(new ServerBuilder(), true)
+        final VirtualHost virtualHost = new VirtualHostBuilder(Server.builder(), true)
                 .service(routeA, (ctx, req) -> HttpResponse.of(OK))
                 .service(routeB, (ctx, req) -> HttpResponse.of(OK))
                 .build();

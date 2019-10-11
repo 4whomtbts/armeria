@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.ClassRule;
 import org.junit.Test;
 
-import com.linecorp.armeria.client.ClientFactoryBuilder;
+import com.linecorp.armeria.client.ClientFactory;
 import com.linecorp.armeria.client.HttpClient;
 import com.linecorp.armeria.client.HttpClientBuilder;
 import com.linecorp.armeria.client.logging.LoggingClientBuilder;
@@ -63,11 +63,11 @@ public class ClientAuthIntegrationTest {
     @Test
     public void normal() {
         final HttpClient client = new HttpClientBuilder(rule.httpsUri("/"))
-                .factory(new ClientFactoryBuilder()
-                                 .sslContextCustomizer(ctx -> ctx
+                .factory(ClientFactory.builder()
+                                      .sslContextCustomizer(ctx -> ctx
                                          .keyManager(clientCert.certificateFile(), clientCert.privateKeyFile())
                                          .trustManager(InsecureTrustManagerFactory.INSTANCE))
-                                 .build())
+                                      .build())
                 .decorator(new LoggingClientBuilder().newDecorator())
                 .build();
         assertThat(client.get("/").aggregate().join().status()).isEqualTo(HttpStatus.OK);

@@ -63,14 +63,15 @@ import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
  *
  * <h2>Example</h2>
  * <pre>{@code
- * final ClientFactory factory = new ClientFactoryBuilder();
+ * final ClientFactory factory = ClientFactory.builder()
  *     // Set the connection timeout to 5 seconds.
- *     .connectTimeoutMillis(5000)
+ *                                            .connectTimeoutMillis(5000)
  *     // Set the socket send buffer to 1 MiB.
- *     .socketOption(ChannelOption.SO_SNDBUF, 1048576)
+ *                                            .socketOption(ChannelOption.SO_SNDBUF, 1048576)
  *     // Disable certificate verification; never do this in production!
- *     .sslContextCustomizer(b -> b.trustManager(InsecureTrustManagerFactory.INSTANCE))
- *     .build();
+ *                                            .sslContextCustomizer(b -> b.trustManager(
+ *                                                  InsecureTrustManagerFactory.INSTANCE))
+ *                                            .build();
  * }</pre>
  */
 public final class ClientFactoryBuilder {
@@ -120,7 +121,10 @@ public final class ClientFactoryBuilder {
 
     /**
      * Creates a new instance.
+     *
+     * @deprecated Use {@link ClientFactory#builder()}.
      */
+    @Deprecated
     public ClientFactoryBuilder() {
         connectTimeoutMillis(Flags.defaultConnectTimeoutMillis());
     }

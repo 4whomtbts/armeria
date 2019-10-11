@@ -58,15 +58,15 @@ connection-level timeouts such as connect timeout and idle timeout programmatica
     import com.linecorp.armeria.client.ClientFactory;
     import com.linecorp.armeria.client.ClientFactoryBuilder;
 
-    ClientFactory factory = new ClientFactoryBuilder()
-            // Increase the connect timeout from 3.2s to 10s.
-            .connectTimeout(Duration.ofSeconds(10))
-            // Shorten the idle connection timeout from 10s to 5s.
-            .idleTimeout(Duration.ofSeconds(5))
-            // Note that you can also adjust other connection-level
-            // settings such as enabling HTTP/1 request pipelining.
-            .useHttp1Pipelining(true)
-            .build();
+    ClientFactory factory = ClientFactory.builder()
+                                        // Increase the connect timeout from 3.2s to 10s.
+                                        .connectTimeout(Duration.ofSeconds(10))
+                                        // Shorten the idle connection timeout from 10s to 5s.
+                                        .idleTimeout(Duration.ofSeconds(5))
+                                        // Note that you can also adjust other connection-level
+                                        // settings such as enabling HTTP/1 request pipelining.
+                                        .useHttp1Pipelining(true)
+                                        .build();
 
 Note that :api:`ClientFactory` implements ``java.lang.AutoCloseable`` and thus needs to be closed when you
 terminate your application. On ``close()``, :api:`ClientFactory` will close all the connections it manages

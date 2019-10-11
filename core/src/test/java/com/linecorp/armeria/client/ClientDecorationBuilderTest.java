@@ -40,7 +40,7 @@ public class ClientDecorationBuilderTest {
      */
     @Test
     public void typeConstraints() {
-        final ClientDecorationBuilder cdb = new ClientDecorationBuilder();
+        final ClientDecorationBuilder cdb = ClientDecoration.builder();
         assertThatThrownBy(() -> cdb.add(Request.class, Response.class, identity()))
                 .isInstanceOf(IllegalArgumentException.class);
         assertThatThrownBy(() -> cdb.add(HttpRequest.class, RpcResponse.class, identity()))
